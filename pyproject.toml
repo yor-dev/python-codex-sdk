@@ -6,9 +6,64 @@ readme = "README.md"
 authors = [
     { name = "yor-dev", email = "52931599+yor-dev@users.noreply.github.com" },
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.12"
 dependencies = []
+
+[tool.uv.build-backend]
+module-name = "codex_sdk"
 
 [build-system]
 requires = ["uv_build>=0.9.7,<0.10.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = ["mypy>=1.18.2", "pytest>=8.4.2", "ruff>=0.14.5"]
+
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+exclude = ["ui_backend"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "N",   # pep8-naming
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501",   # line too long (handled by formatter)
+    "B008",   # do not perform function calls in argument defaults
+    "SIM103", # return the condition directly
+    "N801",   # Class name `bulkArgs` should use CapWords convention
+
+]
+unfixable = ["F401"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_calls = false
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+files = ["."]
+mypy_path = ["src"]
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["tmp", ".*", "build", "dist", "__pycache__", "*.egg-info"]
