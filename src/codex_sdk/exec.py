@@ -198,7 +198,7 @@ class CodexExec:
         # kills the child process when signal.abort() is called
         async def monitor_signal() -> None:
             if args.signal:
-                await args.signal.wait()  # Wait for event.set()
+                await args.signal.wait()
                 if process.returncode is None:
                     process.kill()
 
@@ -208,6 +208,10 @@ class CodexExec:
             # Read and yield stdout lines
             if process.stdout:
                 async for line_bytes in process.stdout:
+                    # Check if signal was set - abort immediately if so
+                    if args.signal and args.signal.is_set():
+                        break
+
                     line = line_bytes.decode("utf-8").rstrip("\r\n")
                     if line:  # Skip empty lines
                         yield line
@@ -215,15 +219,12 @@ class CodexExec:
             # Wait for process to complete
             exit_code = await process.wait()
 
-            # Wait for stderr collection to complete
-            await stderr_task
-
             if exit_code != 0:
                 stderr_output = b"".join(stderr_chunks).decode("utf-8")
                 raise CodexExecError(f"Codex Exec exited with code {exit_code}: {stderr_output}")
 
         finally:
-            # Cleanup
+            # Cleanup - always wait for stderr collection to finish
             stderr_task.cancel()
             with contextlib.suppress(asyncio.CancelledError):
                 await stderr_task
