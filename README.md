@@ -1,6 +1,6 @@
 # Python Codex SDK
 
-Python SDK for OpenAI Codex CLI. This is a port of the official [TypeScript SDK](https://github.com/openai/codex/tree/main/sdk/typescript).
+**Unofficial** Python SDK for OpenAI Codex CLI. This is a port of the official [TypeScript SDK](https://github.com/openai/codex/tree/main/sdk/typescript).
 
 Based on commit [`3f1c4b9`](https://github.com/openai/codex/commit/3f1c4b9add8908936699ce47b17c94f8c9fd8018) (Nov 15, 2025) from the official repository.
 
