@@ -156,6 +156,7 @@ class CodexExec:
             env["CODEX_API_KEY"] = args.api_key
 
         # Spawn the process
+
         process = await asyncio.create_subprocess_exec(
             self.executable_path,
             *command_args,
@@ -163,6 +164,8 @@ class CodexExec:
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
             env=env,
+            # Increase buffer limit to handle large file contents in JSON responses
+            limit=1024 * 1024 * 50,  # 50MB buffer limit
         )
 
         if not process.stdin:
