@@ -18,6 +18,8 @@ pip install python-codex-sdk
 
 Requires Python 3.12+ and the [Codex CLI](https://developers.openai.com/codex/cli/).
 
+## Examples
+See the [examples/](examples/) directory for usage samples.
 
 ## Testing
 
